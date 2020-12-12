@@ -7,6 +7,7 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import MenuList from "@material-ui/core/MenuList";
 import MenuItem from "@material-ui/core/MenuItem";
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import NewItem from "../NewItem/NewItem";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,11 +28,23 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Control = () => {
+const Control = props => {
 
     const classes = useStyles();
-    const [open, setOpen] = useState(false);
+
     const anchorRef = useRef(null);
+
+    const [open, setOpen] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false);
+
+
+    const handleClickOpen = () => {
+        setOpenDialog(true);
+    };
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+    };
 
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
@@ -83,7 +96,11 @@ const Control = () => {
                             <Paper>
                                 <ClickAwayListener onClickAway={handleClose}>
                                     <MenuList autoFocusItem={open} onKeyDown={handleListKeyDown}>
-                                        <MenuItem onClick={handleClose}>Добавить товар</MenuItem>
+                                        <MenuItem
+                                            onClick={handleClickOpen}
+                                        >
+                                            Добавить товар
+                                        </MenuItem>
                                     </MenuList>
                                 </ClickAwayListener>
                             </Paper>
@@ -91,6 +108,11 @@ const Control = () => {
                     )}
                 </Popper>
             </div>
+            <NewItem
+                openDialog={openDialog}
+                handleCloseDialog={handleCloseDialog}
+                params={props.params}
+            />
         </div>
     );
 };
